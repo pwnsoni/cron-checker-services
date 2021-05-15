@@ -1,0 +1,38 @@
+service: cron-checker-services # NOTE: update this with your service name
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  stage: dev
+  region: us-east-1
+
+functions:
+  nuxt:
+    handler: handler.render
+    events:
+      - http: 
+          path: /
+          method: ANY
+          cors: true
+      - http: 
+          path: /{proxy+}
+          method: ANY
+          cors: true
+
+  createandmapRule:
+    handler: lambdaHandler/createRule.handler
+
+  removeRule:
+    handler: lambdaHandler/removeRule.handler
+    
+  testinvoke:
+    handler: lambdaHandler/test.render
+
+  verifythecron:
+    handler: lambdaHandler/verifyTheCron.handler
+
+
+
+
+
+

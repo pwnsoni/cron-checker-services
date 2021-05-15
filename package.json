@@ -1,0 +1,29 @@
+{
+  "name": "cron-checker-services",
+  "version": "1.0.0",
+  "description": "Other micro services required for cron-cheker",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pwnsoni/cron-checker-services.git"
+  },
+  "author": "Pawan Soni",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pwnsoni/cron-checker-services/issues"
+  },
+  "homepage": "https://github.com/pwnsoni/cron-checker-services#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.12.7",
+    "serverless-http": "^2.7.0"
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.897.0"
+  }
+}
