@@ -22,20 +22,29 @@ const verifyTheCron = async (event) => {
 
     console.log(check(res[0].lastHits[res[0].lastHits.length - 1]))
 
+    try{
 
-    if(check(res[0].lastHits[res[0].lastHits.length - 1])){
-        console.log(`All good, cron was hit today`);
-    } else{
-        console.log(`cron was not hit today`);
-        console.log('updating lastHits');
-        let update = new Date();
-        // let update = await db.collection('lasthits').updateOne({_id: new ObjectID(lastHit)}, {updatedAt: updatedAt}, {new: true})
-        // console.log(`fetching the sns recipients`);
-        let recipients = await db.collection("snsgroups").find({_id: new ObjectID(sns)}).toArray();
-        await sendMail(res[0] ,update, recipients[0].recipients)
+        if(check(res[0].lastHits[res[0].lastHits.length - 1])){
+            console.log(`All good, cron was hit today`);
+        } else{
+            console.log(`cron was not hit today`);
+            console.log('updating lastHits');
+            let updatedAt = new Date();
+            let update = await db.collection('lasthits').updateOne({_id: new ObjectID(lastHit)}, 
+                    {$set: {updatedAt: updatedAt}, $push: {failedHits: updatedAt}}, {upsert: true})
+            console.log(`fetching the sns recipients`);
+            let recipients = await db.collection("snsgroups").find({_id: new ObjectID(sns)}).toArray();
+            await sendMail(res[0] ,updatedAt, recipients[0].recipients);
+        }
+    
+        return {'statusCode': 200, 'message': 'verfied this cron for DATE => ' + new Date()};
+
+    }catch(e){
+        console.log(JSON.stringify(e));
+        return {'statusCode': 500, 'message': 'Error in verfied this cron for DATE => ' + new Date(), "error": JSON.stringify(e)};
     }
 
-    return {'statusCode': 200, 'message': 'verfied this cron for DATE => ' + new Date()};
+
 }
 
 const check = (d) => {

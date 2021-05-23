@@ -28,8 +28,8 @@ const sendMail = async (lastHit, time, recipients) => {
 
     try{
         const res = await mailTransporter.sendMail(mailDetails);
-        console.log(res);
-        return JSON.stringify(res)
+        console.log(res.messageId);
+        return JSON.stringify(res.messageId)
     }catch(e){
         console.log(JSON.stringify(e));
         return JSON.stringify(e);
