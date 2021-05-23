@@ -5,6 +5,7 @@ const {invokeTest, invoke} = require('./util.js')
 const createRule = require('./lambdaHandler/createRule').handler;
 const putTarget = require('./lambdaHandler/putTarget');
 const removeRule = require('./lambdaHandler/removeRule').handler;
+const verifyTheCron = require('./lambdaHandler/verifyTheCron').handler;
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -55,6 +56,13 @@ app.post('/api/removeRule', async (req, res) => {
     const {ruleName, targetId} = req.body;``
     console.log('removing from post' + ruleName);
     const result = await removeRule({ruleName, targetId});
+    res.send(`returned from lambda function invoke ${result}`);
+})
+
+app.post('/api/verify', async (req, res) => {
+    const {cron, sns, lastHit} = req.body;``
+    console.log('removing from post' + lastHit);
+    const result = await verifyTheCron({cron, sns, lastHit});
     res.send(`returned from lambda function invoke ${result}`);
 })
 
